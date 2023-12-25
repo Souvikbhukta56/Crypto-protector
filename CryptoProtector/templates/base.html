@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Styles.css' %}">
+    <title>CryptoProtector</title>
+</head>
+
+<body>
+    {% if messages %}
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            {% for message in messages %}
+            <ul class="messages">
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            </ul>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="logo"><img src="{% static 'images/Logo.png' %}" alt="Logo"></div>
+
+    {% block content %}
+    {% endblock %}
+    
+</body>
+
+<!-- JavaScript for Modal Behavior -->
+<script>
+    var modal = document.getElementById("messageModal");
+    var closeBtn = document.getElementsByClassName("close");
+    function closeModal(){modal.style.display = "none";}
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    };
+</script>
+
+</html>

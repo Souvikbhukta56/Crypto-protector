@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="options">
+        <div><a href="/share-file/">SHARE FILES</a></div>
+        <div><a href="/received-files/">VIEW FILES</a></div>
+        <button><a href="/logout/">Logout</a></button>
+    </div>
+    <h1>Download file</h1>
+    <form action="#" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Selected file</label>
+            <input type="text" name="file" value="{{file_name}}" readonly>
+        </div>
+    
+        <div class="form-group">
+            <button type="submit">Decrypt & Download</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

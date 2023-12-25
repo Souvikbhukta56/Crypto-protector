@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="options">
+        <div><a href="/share-file/">SHARE FILES</a></div>
+        <div><a href="/received-files/">VIEW FILES</a></div>
+        <button><a href="/logout/">Logout</a></button>
+    </div>
+    <h1>Share files</h1>
+    <form action="#" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Share with</label>
+            <div class = "select-wrapper">
+                <select name="name">
+                    {% for name in users %}
+                        <option value="{{name.0}}">{{name.0}}</option>
+                    {% endfor %}   
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="file">Select file</label>
+            <input type="file" name="fileToUpload" required>
+        </div>
+    
+        <div class="form-group">
+            <button type="submit" value="Upload">Share</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="options">
+        <div><a href="/share-file/">SHARE FILES</a></div>
+        <div><a href="/received-files/">VIEW FILES</a></div>
+        <button><a href="/logout/">Logout</a></button>
+    </div>
+    <h1 id="h">Received files</h1>
+    <div class="scrollable-table-container">
+        {% if items %}
+            <table>
+                <tr>
+                    <th>Sender</th>
+                    <th>Time</th>
+                    <th>File</th>
+                    <th>Action</th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td>{{item.1}}</td>
+                        <td>{{item.2}}</td>
+                        <td>{{item.3}}</td>
+                        <td class="already-have-account">
+                        <a href="{% url 'download-file' file_id=item.0 %}">Download</a>
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No files received yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    #h{
+        margin-top: 10%;
+    }
+    table {
+        width: 100%;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-weight: 100;
+    }
+    th, td {
+        font-size:15px;
+        padding: 5px;
+        text-align: center;
+    }
+    th {
+        background-color: #2ea7f7;
+        color: white;
+        font-weight: 300;
+        border-radius: 5px;
+    }
+    td {
+        font-weight: 100;
+    }
+    tr:nth-child(odd) {
+        background-color: rgba(162, 172, 245, 0.205);
+    }
+    tr:hover {
+        background-color: #ddd;
+    } 
+    /* Target the scrollbar track */
+    ::-webkit-scrollbar {
+        width: 8px; /* Width of the scrollbar */
+    }
+
+    /* Target the scrollbar thumb (the draggable part of the scrollbar) */
+    ::-webkit-scrollbar-thumb {
+        background: #5a8dfa; /* Color of the thumb */
+        border-radius: 6px; /* Rounded corners for the thumb */
+    }
+
+    /* Target the scrollbar track when not being hovered over */
+    ::-webkit-scrollbar-track {
+        background: #a0c8ff; /* Color of the track */
+        border-radius: 6px;
+    }
+
+    /* Target the scrollbar thumb when being hovered over */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #3236f9; /* Change color when hovered over */
+    }
+
+</style>
+
+{% endblock %}
