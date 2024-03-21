@@ -7,28 +7,24 @@
         <div><a href="/share-file/">Share File</a></div>
         <div><a href="/received-files/">Received Files</a></div>
     </div>
-    <h1>Share files</h1>
-    <form action="#" method="post" enctype="multipart/form-data">
+    <h3 style="margin-top:5%">Encryption</h3>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="name">Share with</label>
-            <div class = "select-wrapper">
-                <select name="name">
-                    {% for name in users %}
-                        <option value="{{name.0}}">{{name.0}}</option>
-                    {% endfor %}   
-                </select>
-            </div>
-        </div>
-        
         <div class="form-group">
             <label for="file">Select file</label>
             <input type="file" name="fileToUpload" required>
         </div>
-    
+        <button class="small-button" type="submit" value="Upload" name="encrypt">Encrypt & Download</button>
+    </form>
+
+    <h3 style="margin-top:5%">Decryption</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="form-group">
-            <button type="submit" value="Upload">Share</button>
+            <label for="file">Select encrypted file</label>
+            <input type="file" name="fileToUpload" required>
         </div>
+        <button class="small-button" type="submit" value="Upload" name="decrypt">Decrypt & Download</button>
     </form>
     <button class="logout"><a href="/logout/">Logout</a></button>
 </div>

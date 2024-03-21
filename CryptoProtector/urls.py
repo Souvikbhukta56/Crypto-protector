@@ -8,4 +8,5 @@ urlpatterns = [
     path("share-file/",views.share_file,name="share-file"),
     path("received-files/",views.received_files,name="received-files"),
     path("received-files/<str:file_id>/",views.download_file,name="download-file"),
+    path("encrypt-decrypt-file/",views.encrypt_decrypt_file,name="encrypt-decrypt-file"),
 ]

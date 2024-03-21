@@ -31,14 +31,14 @@ def signup(request):
 
 def login(request):
     if request.session.get('user_authenticated'):
-        return redirect('share-file')
+        return redirect('encrypt-decrypt-file')
     if request.method == 'POST':
         username = request.POST.get('uname')
         password = request.POST.get('password')
         if DB.authenticate(username, password):
             request.session['user_authenticated'] = True
             request.session['current_user'] = username
-            return redirect('share-file')
+            return redirect('encrypt-decrypt-file')
         else:
             messages.error(request, 'Invalid credentials')
     return render(request,'Login.html')
@@ -46,6 +46,40 @@ def login(request):
 def logout(request):
     request.session.clear()
     return redirect('login')
+
+def encrypt_decrypt_file(request):
+    if not request.session.get('user_authenticated'):
+        return redirect('login')
+
+    if request.method == 'POST' and request.FILES['fileToUpload'] and 'encrypt' in request.POST:
+        file = request.FILES['fileToUpload']
+        ciphertext = [AES().encrypt(file.read()), file.name]
+
+        file_path = "data.json"
+        with open(file_path, "w") as json_file:
+            json.dump(ciphertext, json_file)
+
+        file = open(file_path, 'rb')
+        response = FileResponse(file, as_attachment=True)
+        response['Content-Disposition'] = f'attachment; filename="{file_path}"'
+        return response
+
+    if request.method == 'POST' and request.FILES['fileToUpload'] and 'decrypt' in request.POST:
+        file = request.FILES['fileToUpload']
+        if file.name.endswith('.json'):
+            if os.path.exists("temp"):
+                rmtree("temp")
+            ciphertext = json.load(file)
+            try:
+                AES().decrypt(ciphertext[0], ciphertext[1])
+            except Exception:
+                messages.error(request, 'Invalid File')
+                return redirect('encrypt-decrypt-file')
+            file = open("./temp/"+ciphertext[1], 'rb')
+            response = FileResponse(file, as_attachment=True)
+            response['Content-Disposition'] = f'attachment; filename="{ciphertext[1]}"'
+            return response
+    return render(request, 'EncryptDecryptFile.html')
 
 def store_json_data(data):
     data = {"data": json.dumps(data)}
